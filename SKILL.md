@@ -18,8 +18,12 @@ python3 "<skill目录>/scripts/doctor.py" --format text
 ~~~
 
 - 全部通过：继续。
-- 缺依赖：按 doctor 输出的安装提示补齐（pip install yt-dlp faster-whisper、安装 ffmpeg），补齐后重跑。
-- 缺转写模型：不影响下载；首次转写时会自动下载（约 460MB），提前告知用户。
+- 缺依赖：先停下来提醒用户，不要自己装。告诉用户三件事：缺了什么、它是干什么的
+  （yt-dlp 负责解析下载，ffmpeg 负责合成校验，faster-whisper 负责离线转写）、装的方式
+  （pip install yt-dlp faster-whisper；ffmpeg 用 scoop/winget 或官网安装包）。
+  用户明确同意后才执行安装；用户没同意前绝不自动 pip install，也绝不调用 --install 参数。
+- 缺转写模型：不影响下载；首次转写时才自动下载（约 460MB），提前告知用户这一点。
+- doctor.py 的 --install 参数只是给高级用户的手动选项，Codex 流程中禁止主动使用。
 
 ### 第 1 步：判断是否需要转写（先问，再动手）
 

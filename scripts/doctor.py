@@ -74,7 +74,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("--install", action="store_true",
-                        help="自动 pip install yt-dlp faster-whisper")
+                        help="手动可选：pip install yt-dlp faster-whisper（脚本流程不会自动调用）")
     args = parser.parse_args()
 
     if args.install:

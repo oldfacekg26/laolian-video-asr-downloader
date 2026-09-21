@@ -56,6 +56,9 @@ git clone --depth 1 https://github.com/oldfacekg26/laolian-video-asr-downloader.
 python3 "$CODEX_HOME/skills/laolian-video-asr-downloader/scripts/doctor.py"
 ~~~
 
+首次使用时 Skill 只会检查依赖并提醒你缺什么、怎么装，未经你确认不会自动安装任何东西；
+转写模型（约 460MB）也是在第一次转写前确认后才下载。
+
 ## 使用
 
 装好后，直接把分享口令或链接发给 Codex 即可，例如：
