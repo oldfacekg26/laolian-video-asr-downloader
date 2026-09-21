@@ -31,11 +31,20 @@ python3 "<skill目录>/scripts/doctor.py" --format text
 
 - always：直接转写，不用问。
 - never：不转写，不用问。
-- ask（新用户默认）：必须先问用户，给四个选项：
-  1. 这次转写 —— 加 --transcribe yes
-  2. 这次跳过 —— 加 --transcribe no
-  3. 以后默认转写 —— 加 --transcribe yes --remember-default
-  4. 以后默认不转写 —— 加 --transcribe no --remember-default
+- ask（新用户默认）：必须先问用户，问题和选项原样使用，不要改写、不要加命令行参数：
+  「请问视频下载完成后，是否需要转写成文案一起保存」
+  1、转写
+  2、跳过
+  3、以后都默认转写
+  4、以后都默认跳过
+  用户选 3 或 4 后，本次立即生效并写入配置，以后不再问。
+  选项对应的命令行参数（只给 Codex 执行用，不要展示给用户）：
+  | 选项 | 参数 |
+  | --- | --- |
+  | 1、转写 | --transcribe yes |
+  | 2、跳过 | --transcribe no |
+  | 3、以后都默认转写 | --transcribe yes --remember-default |
+  | 4、以后都默认跳过 | --transcribe no --remember-default |
 
 用户没提转写相关的话，也要按此规则问一次；除非用户明确说"不用问"。
 

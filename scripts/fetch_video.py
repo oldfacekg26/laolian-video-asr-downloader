@@ -307,11 +307,18 @@ def process_one(link: str, args, cfg: dict) -> dict:
             "title": title,
             "video_path": str(video_path),
             "info_note": str(info_note),
+            "question": "请问视频下载完成后，是否需要转写成文案一起保存",
             "options": [
-                "这次转写：--transcribe yes",
-                "这次跳过：--transcribe no",
-                "以后默认转写：--transcribe yes --remember-default",
-                "以后默认不转写：--transcribe no --remember-default",
+                "1、转写",
+                "2、跳过",
+                "3、以后都默认转写",
+                "4、以后都默认跳过",
+            ],
+            "option_flags": [
+                "--transcribe yes",
+                "--transcribe no",
+                "--transcribe yes --remember-default",
+                "--transcribe no --remember-default",
             ],
         }
 
