@@ -51,6 +51,30 @@ def extract_url(text: str) -> Optional[str]:
     return match.group(0).rstrip(".,;:)]}。")
 
 
+HEX_ID_RE = re.compile(r"^[0-9a-fA-F]{16,}$")
+
+
+def parse_share_nickname(share_text: str) -> Optional[str]:
+    """从分享口令文本里解析博主昵称，作为 yt-dlp 拿不到昵称时的兜底。
+
+    小红书口令形如：
+    46 【AI根本自动化不了  - 阿张正传 | 小红书 - 你的生活兴趣社区】 ...
+    yt-dlp 对小红书只返回一串用户 ID，没有昵称字段。
+    """
+    if not share_text:
+        return None
+    match = re.search(r"【(.+?)】", share_text)
+    if not match:
+        return None
+    head = match.group(1).split("|")[0].strip()
+    if " - " not in head:
+        return None
+    nick = head.rpartition(" - ")[2].strip()
+    if not nick or HEX_ID_RE.match(nick) or "http" in nick.lower():
+        return None
+    return nick
+
+
 def detect_platform(url: str) -> str:
     for name, pattern in PLATFORMS:
         if pattern.search(url):
@@ -228,8 +252,13 @@ def process_one(link: str, args, cfg: dict) -> dict:
     if not info:
         return {"status": "error", "platform": platform, "error": "解析不到作品信息"}
 
-    uploader = sanitize(info.get("uploader") or info.get("channel")
-                        or info.get("creator") or info.get("uploader_id") or "未知博主", 40)
+    raw_uploader = str(info.get("uploader") or info.get("channel")
+                       or info.get("creator") or "").strip()
+    if not raw_uploader or HEX_ID_RE.match(raw_uploader):
+        raw_uploader = (parse_share_nickname(link) or raw_uploader
+                        or str(info.get("uploader_id") or "").strip()
+                        or "未知博主")
+    uploader = sanitize(raw_uploader, 40)
     title = sanitize(info.get("title") or str(info.get("id") or "未知标题"))
     description = (info.get("description") or "").strip()
     date = datetime.now().strftime("%Y-%m-%d")
