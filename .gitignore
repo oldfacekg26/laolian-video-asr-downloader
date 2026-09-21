@@ -1,0 +1,4 @@
+config.local.json
+models/
+__pycache__/
+*.pyc

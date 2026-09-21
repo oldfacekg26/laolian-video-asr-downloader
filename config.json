@@ -1,0 +1,7 @@
+{
+  "output_root": "",
+  "default_transcribe": "ask",
+  "whisper_model": "small",
+  "model_path": "",
+  "mode": "fast"
+}
