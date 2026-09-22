@@ -15,7 +15,8 @@
 3. 在桌面按博主名建文件夹，子文件夹按【年-月-日】博主名-作品标题命名。
 4. 可选本地离线转写（faster-whisper，不花钱、不传云端），生成【年-月-日】【文案】博主名-作品标题.md，逐句带 [分:秒] 时间戳。
 5. 转写默认值可配置：新用户首次使用会先回答一个问题「视频下载完成后，是否需要转写成文案一起保存」，四选一（转写 / 跳过 / 以后都默认转写 / 以后都默认跳过）。
-6. 需要登录时如实提示：B站可用扫码登录，抖音/小红书用浏览器 Cookie。
+6. 免登录优先：抖音默认路线失败（403/风控）时自动启用临时浏览器兜底，无需登录；
+   只有内容本身需要登录时才如实提示用户，等用户确认后再继续。
 
 ## 归档结构
 
@@ -89,7 +90,10 @@ python3 scripts/fetch_video.py "<分享口令或链接>" --transcribe yes
 
 - 多数公开视频无需登录。
 - B站高清画质、部分视频需要登录：加 --qr，用 B站 App 扫终端里的二维码；或浏览器登录后加 --cookies-from-browser chrome。
-- 抖音、小红书遇到需要登录的：在自己浏览器登录后加 --cookies-from-browser chrome（或 edge）。
+- 抖音、小红书：优先用免登录兜底路线（自动启用）。确实需要登录时，新版 Chrome（127+）
+  禁止外部程序读取浏览器 Cookie，--cookies-from-browser 会报 "Failed to decrypt with DPAPI"，
+  属平台限制。可行办法：用浏览器扩展（如 Get cookies.txt LOCALLY）导出 cookies.txt 后
+  加 --cookies cookies.txt 重试，或换 Edge 试 --cookies-from-browser edge。
 - 脚本不保存账号密码；Cookie 只在本次命令中生效。
 
 ## 配置
